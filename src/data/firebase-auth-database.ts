@@ -1,164 +1,193 @@
-import * as admin from 'firebase-admin'
-import * as firebase from 'firebase'
-import { getConfig } from '../config'
-import { AuthDataSource, AuthInfo, AuthService, ThirdProvider } from '../core/data-sources/auth-data-source'
+import * as admin from "firebase-admin";
+import { default as firebase } from "firebase";
+import { getConfig } from "../config";
+import {
+  AuthDataSource,
+  AuthInfo,
+  AuthService,
+  ThirdProvider,
+} from "../core/data-sources/auth-data-source";
 
-export class FirebaseAuthDatabase implements AuthDataSource{
-    private user: firebase.User
+export class FirebaseAuthDatabase implements AuthDataSource {
+  private user: firebase.User;
 
-    constructor() {
-        if (!firebase.apps.length) {
-            firebase.initializeApp({
-                credential: admin.credential.cert({
-                    projectId: getConfig().firebase.projectId,
-                    clientEmail: getConfig().firebase.clientEmail,
-                    privateKey: getConfig().firebase.privateKey,
-                }),
-                apiKey: getConfig().firebase.apiKey,
-              });
-        }
-
-        if (!admin.apps.length) {
-            admin.initializeApp({
-                credential: admin.credential.cert({
-                    projectId: getConfig().firebase.projectId,
-                    clientEmail: getConfig().firebase.clientEmail,
-                    privateKey: getConfig().firebase.privateKey,
-                }),
-              });
-        }
-    }
-    
-    public async signUpWithEmail(email: string, password: string): Promise<AuthInfo>{
-        return new Promise<AuthInfo>(async (res, rej) => {
-            try {
-                const credential = await firebase.auth().createUserWithEmailAndPassword(email, password)
-                const customToken = await admin.auth().createCustomToken(credential.user.uid)
-        
-                res(this.firebaseCredentialToAuthInfo(credential, customToken))
-            } catch (err) {
-                rej(err)
-            }
-        })
-    }
-    
-    public async signInWithEmail(email: string, password: string): Promise<AuthInfo> {
-        return new Promise<AuthInfo>(async (res, rej) =>  {
-            try {
-                const credential = await firebase.auth().signInWithEmailAndPassword(email, password)
-                const customToken = await admin.auth().createCustomToken(credential.user.uid)
-
-                res(this.firebaseCredentialToAuthInfo(credential, customToken))
-            } catch (err) {
-                rej(err)
-            }
-        })
+  constructor() {
+    if (!firebase.apps.length) {
+      firebase.initializeApp({
+        credential: admin.credential.cert({
+          projectId: getConfig().firebase.projectId,
+          clientEmail: getConfig().firebase.clientEmail,
+          privateKey: getConfig().firebase.privateKey,
+        }),
+        apiKey: getConfig().firebase.apiKey,
+      });
     }
 
-    public async sendPasswordResetEmail(email: string): Promise<string> {
-        return new Promise<string>(async (res, rej) => {
-            try {
-                await firebase.auth().sendPasswordResetEmail(email)
-                res(`Reset Password Email sent to ${email}`)
-            } catch (err) {
-                rej(err)
-            }
-        })
+    if (!admin.apps.length) {
+      admin.initializeApp({
+        credential: admin.credential.cert({
+          projectId: getConfig().firebase.projectId,
+          clientEmail: getConfig().firebase.clientEmail,
+          privateKey: getConfig().firebase.privateKey,
+        }),
+      });
     }
-    public async changePassword(token: string, newPassword: string): Promise<string> {
-        await this.authenticate(token)
-        await this.user.updatePassword(newPassword)
-        return 'Password successfully changed'
-    }
+  }
 
-		public async facebookAuthenticate(token: string): Promise<AuthInfo> {
-			const credential = firebase.auth.FacebookAuthProvider.credential(token)
+  public async signUpWithEmail(
+    email: string,
+    password: string
+  ): Promise<AuthInfo> {
+    return new Promise<AuthInfo>(async (res, rej) => {
+      try {
+        const credential = await firebase
+          .auth()
+          .createUserWithEmailAndPassword(email, password);
+        const customToken = await admin
+          .auth()
+          .createCustomToken(credential.user.uid);
 
-			return new Promise<AuthInfo>(async (res, rej) => {
-				await firebase.auth().signInAndRetrieveDataWithCredential(credential)
-					.then((result) => {
-						res({
-							id: result.user.uid,
-							token,
-							refreshToken: result.user.refreshToken,
-							authService: AuthService.Cognito,
-							thirdProvider: ThirdProvider.Facebook,
-						})
-					})
-					.catch((err) => console.log('err: ', err)) 
-			})
-		}
+        res(this.firebaseCredentialToAuthInfo(credential, customToken));
+      } catch (err) {
+        rej(err);
+      }
+    });
+  }
 
-		public async googleAuthenticate(token: string): Promise<AuthInfo> {
-			const credential = firebase.auth.GoogleAuthProvider.credential(token)
+  public async signInWithEmail(
+    email: string,
+    password: string
+  ): Promise<AuthInfo> {
+    return new Promise<AuthInfo>(async (res, rej) => {
+      try {
+        const credential = await firebase
+          .auth()
+          .signInWithEmailAndPassword(email, password);
+        const customToken = await admin
+          .auth()
+          .createCustomToken(credential.user.uid);
 
-			return new Promise<AuthInfo>(async (res, rej) => {
-				await firebase.auth().signInAndRetrieveDataWithCredential(credential)
-					.then((result) => {
-						res({
-							id: result.user.uid,
-							token,
-							refreshToken: result.user.refreshToken,
-							authService: AuthService.Cognito,
-							thirdProvider: ThirdProvider.Google,
-						})
-					})
-					.catch((err) => console.log('err: ', err)) 
-			})
-		}
-    public async authenticate(token: string): Promise<AuthInfo> {
-        await firebase.auth().signInWithCustomToken(token)
-        
-        this.user = firebase.auth().currentUser
+        res(this.firebaseCredentialToAuthInfo(credential, customToken));
+      } catch (err) {
+        rej(err);
+      }
+    });
+  }
 
-        return {
-            id: this.user.uid,
+  public async sendPasswordResetEmail(email: string): Promise<string> {
+    return new Promise<string>(async (res, rej) => {
+      try {
+        await firebase.auth().sendPasswordResetEmail(email);
+        res(`Reset Password Email sent to ${email}`);
+      } catch (err) {
+        rej(err);
+      }
+    });
+  }
+  public async changePassword(
+    token: string,
+    newPassword: string
+  ): Promise<string> {
+    await this.authenticate(token);
+    await this.user.updatePassword(newPassword);
+    return "Password successfully changed";
+  }
+
+  public async facebookAuthenticate(token: string): Promise<AuthInfo> {
+    const credential = firebase.auth.FacebookAuthProvider.credential(token);
+
+    return new Promise<AuthInfo>(async (res, rej) => {
+      await firebase
+        .auth()
+        .signInAndRetrieveDataWithCredential(credential)
+        .then((result) => {
+          res({
+            id: result.user.uid,
             token,
-            refreshToken: this.user.refreshToken,
-            authService: AuthService.Firebase,
-            thirdProvider: ThirdProvider.None
-        }
-    }
-    
-    public async signOut(token: string): Promise<void> {
-        await this.authenticate(token)
-        await firebase.auth().signOut()
-    }
+            refreshToken: result.user.refreshToken,
+            authService: AuthService.Cognito,
+            thirdProvider: ThirdProvider.Facebook,
+          });
+        })
+        .catch((err) => console.log("err: ", err));
+    });
+  }
 
-    public async banUser(uid: string): Promise<string> {
-        return new Promise<string>(async (res, rej) => {
-            try {
-                await admin.auth().updateUser(uid, {
-                    disabled: true
-                })
+  public async googleAuthenticate(token: string): Promise<AuthInfo> {
+    const credential = firebase.auth.GoogleAuthProvider.credential(token);
 
-                res("User disabled successfully")
-            } catch (err) {
-                rej(err)
-            }
-        }) 
-    }
+    return new Promise<AuthInfo>(async (res, rej) => {
+      await firebase
+        .auth()
+        .signInAndRetrieveDataWithCredential(credential)
+        .then((result) => {
+          res({
+            id: result.user.uid,
+            token,
+            refreshToken: result.user.refreshToken,
+            authService: AuthService.Cognito,
+            thirdProvider: ThirdProvider.Google,
+          });
+        })
+        .catch((err) => console.log("err: ", err));
+    });
+  }
+  public async authenticate(token: string): Promise<AuthInfo> {
+    await firebase.auth().signInWithCustomToken(token);
 
-    public async unbanUser(uid: string): Promise<string> {
+    this.user = firebase.auth().currentUser;
+
+    return {
+      id: this.user.uid,
+      token,
+      refreshToken: this.user.refreshToken,
+      authService: AuthService.Firebase,
+      thirdProvider: ThirdProvider.None,
+    };
+  }
+
+  public async signOut(token: string): Promise<void> {
+    await this.authenticate(token);
+    await firebase.auth().signOut();
+  }
+
+  public async banUser(uid: string): Promise<string> {
+    return new Promise<string>(async (res, rej) => {
+      try {
         await admin.auth().updateUser(uid, {
-            disabled: false
-        })
-        return "User enabled successfully"
-    }
+          disabled: true,
+        });
 
-    public async deleteUser(uid: string): Promise<string>{
-        await admin.auth().deleteUser(uid)
-        return 'User deleted successfully'
-    }
-    
-    private async firebaseCredentialToAuthInfo(firebaseCredentials: firebase.auth.UserCredential, customToken?: string): Promise<AuthInfo> {
-        const token = customToken || await firebaseCredentials.user.getIdToken()
-        return {
-            id: firebaseCredentials.user.uid,
-            token,
-            refreshToken: firebaseCredentials.user.refreshToken,
-            authService: AuthService.Firebase,
-            thirdProvider: ThirdProvider.None,
-        }
-    }
+        res("User disabled successfully");
+      } catch (err) {
+        rej(err);
+      }
+    });
+  }
+
+  public async unbanUser(uid: string): Promise<string> {
+    await admin.auth().updateUser(uid, {
+      disabled: false,
+    });
+    return "User enabled successfully";
+  }
+
+  public async deleteUser(uid: string): Promise<string> {
+    await admin.auth().deleteUser(uid);
+    return "User deleted successfully";
+  }
+
+  private async firebaseCredentialToAuthInfo(
+    firebaseCredentials: firebase.auth.UserCredential,
+    customToken?: string
+  ): Promise<AuthInfo> {
+    const token = customToken || (await firebaseCredentials.user.getIdToken());
+    return {
+      id: firebaseCredentials.user.uid,
+      token,
+      refreshToken: firebaseCredentials.user.refreshToken,
+      authService: AuthService.Firebase,
+      thirdProvider: ThirdProvider.None,
+    };
+  }
 }

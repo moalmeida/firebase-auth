@@ -1,10 +1,10 @@
-import { AuthDataSource  } from "./data-sources/auth-data-source"
-import { UnbanUserHandlerInput } from "../presentation/endpoints/unbanUser"
+import { AuthDataSource } from "./data-sources/auth-data-source";
+import { UnbanUserHandlerInput } from "../presentation/handler/unbanUser";
 
 export class UnbanUserUseCase {
-    constructor(private authDataSource: AuthDataSource){}
+  constructor(private authDataSource: AuthDataSource) {}
 
-    public async execute(input: UnbanUserHandlerInput): Promise<string>{
-        return this.authDataSource.unbanUser(input.id)
-    }
+  public async execute(input: UnbanUserHandlerInput): Promise<string> {
+    return this.authDataSource.unbanUser(input.id);
+  }
 }

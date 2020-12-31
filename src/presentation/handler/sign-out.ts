@@ -1,0 +1,19 @@
+import { Context } from "../../context";
+import { SignOutUseCase } from "../../core/sign-out-use-case";
+
+export const SignOutHandler = async (
+  input: any,
+  context: Context
+): Promise<void> => {
+  const signOutHandlerInput: SignOutHandlerInput = {
+    token: input["token"] as string,
+  };
+
+  await new SignOutUseCase(context.getAuthDataSource()).execute(
+    signOutHandlerInput
+  );
+};
+
+export interface SignOutHandlerInput {
+  token: string;
+}

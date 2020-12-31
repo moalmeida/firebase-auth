@@ -1,34 +1,29 @@
 {
   "name": "firebase-auth",
   "version": "1.0.0",
-  "description": "POC of authentication using firebase",
   "main": "server.js",
   "repository": "https://github.com/joaogolias/firebase-auth.git",
-  "author": "Joao Golias <golias.appsimples@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.18.3",
-    "express": "^4.16.4",
-    "firebase": "^5.7.0",
-    "firebase-admin": "^6.3.0",
-    "mongoose": "^5.3.15",
-    "nodemon": "^1.18.7",
-    "ts-node": "^7.0.1"
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "firebase": "^8.2.1",
+    "firebase-admin": "^9.4.2",
+    "mongoose": "^5.11.9",
+    "nodemon": "^2.0.6",
+    "ts-node": "^9.1.1"
   },
   "devDependencies": {
-    "@types/express": "^4.16.0",
-    "@types/mongoose": "^5.3.4",
-    "@types/node": "^10.12.12",
+    "@types/express": "^4.17.9",
+    "@types/mongoose": "^5.10.3",
+    "@types/node": "^14.14.17",
     "@types/reflect-metadata": "^0.1.0"
-	},
-	"engines": {
-    "node": "8.11.3"
   },
   "scripts": {
     "build": "tsc",
     "dev": "ts-node ./lib/server.ts",
-		"build-and-start": "yarn build && nodemon ./build/server.js",
-		"start": "node ./build/server.js",
-		"deploy": "git push heroku master"
+    "build-and-start": "yarn build && nodemon ./build/server.js",
+    "start": "node ./build/server.js",
+    "deploy": "git push heroku master"
   }
 }
