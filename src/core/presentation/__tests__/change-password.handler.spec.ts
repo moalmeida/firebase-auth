@@ -11,7 +11,7 @@ describe("change-password.handler", () => {
   it("shoud execute ", async () => {
     const input = {
       token: faker.random.uuid(),
-      newPassword: faker.random.alphaNumeric(8),
+      newPassword: faker.internet.password(),
     } as ChangePasswordInput;
 
     authenticationDataSource = {

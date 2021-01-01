@@ -2,7 +2,7 @@ import { SigninHandler, SignInInput } from "../handler/sign-in.handler";
 import { SignUpHandler, SignUpInput } from "../handler/sign-up.handler";
 import {
   ResetPasswordEmailInput,
-  SendResetPasswordEmailHandler as ResetPasswordEmailHandler,
+  ResetPasswordEmailHandler,
 } from "../handler/reset-password-email.handler";
 import {
   AuthenticateHandler,

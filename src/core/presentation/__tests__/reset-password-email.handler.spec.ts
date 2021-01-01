@@ -10,7 +10,7 @@ describe("reset-password-email.handler", () => {
 
   it("shoud execute ", async () => {
     const input = {
-      email: "",
+      email: faker.internet.email(),
     } as ResetPasswordEmailInput;
 
     authenticationDataSource = {

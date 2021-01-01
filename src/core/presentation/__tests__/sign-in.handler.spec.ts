@@ -10,8 +10,8 @@ describe("sign-in.handler", () => {
 
   it("shoud execute ", async () => {
     const input = {
-      email: "",
-      password: "",
+      email: faker.internet.email(),
+      password: faker.internet.password(),
     } as SignInInput;
     const output = {
       id: faker.random.uuid(),

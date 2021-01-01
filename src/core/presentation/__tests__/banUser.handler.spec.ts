@@ -10,7 +10,7 @@ describe("banUser.handler", () => {
 
   it("shoud execute ", async () => {
     const input = {
-      token: "",
+      token: faker.random.uuid(),
       provider: ThirdProvider.None,
     } as BanUserInput;
     const output = {
