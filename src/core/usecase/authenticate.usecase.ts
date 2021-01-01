@@ -4,7 +4,10 @@ import {
   ThirdProvider,
 } from "../datasource/authentication.model";
 
-import { AuthenticateInput } from "../presentation/handler/authenticate.handler";
+export interface AuthenticateInput {
+  token: string;
+  provider: string;
+}
 
 export class AuthenticateUseCase {
   constructor(private authenticationDataSource: AuthenticationDataSource) {}

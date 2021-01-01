@@ -1,6 +1,5 @@
 import { AuthenticationDataSource } from "../../datasource/authentication.datasource";
-import { ThirdProvider } from "../../datasource/authentication.model";
-import { BanUserUseCase } from "../../usecase/banUser.usecase";
+import { BanUserInput, BanUserUseCase } from "../../usecase/banUser.usecase";
 
 export const BanUserHandler = async (
   input: BanUserInput,
@@ -8,8 +7,3 @@ export const BanUserHandler = async (
 ): Promise<void> => {
   return new BanUserUseCase(authenticationDataSource).execute(input);
 };
-
-export interface BanUserInput {
-  token: string;
-  provider: ThirdProvider;
-}

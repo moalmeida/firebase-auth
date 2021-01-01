@@ -1,6 +1,10 @@
-import { SignInInput } from "../presentation/handler/sign-in.handler";
 import { AuthenticationDataSource } from "../datasource/authentication.datasource";
 import { AuthenticateOutput } from "../datasource/authentication.model";
+
+export interface SignInInput {
+  email: string;
+  password: string;
+}
 
 export class SignInUseCase {
   constructor(private authenticationDataSource: AuthenticationDataSource) {}

@@ -4,10 +4,8 @@ import {
   AuthenticateOutput,
   ThirdProvider,
 } from "../../datasource/authentication.model";
-import {
-  AuthenticateHandler,
-  AuthenticateInput,
-} from "../handler/authenticate.handler";
+import { AuthenticateInput } from "../../usecase/authenticate.usecase";
+import { AuthenticateHandler } from "../handler/authenticate.handler";
 
 describe("authenticate.handler", () => {
   let authenticationDataSource: any;

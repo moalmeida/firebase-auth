@@ -1,7 +1,11 @@
 import { AuthenticationDataSource } from "../datasource/authentication.datasource";
-import { AuthenticateInput } from "../presentation/handler/authenticate.handler";
-import { BanUserInput } from "../presentation/handler/banUser.handler";
-import { AuthenticateUseCase } from "./authenticate.usecase";
+import { ThirdProvider } from "../datasource/authentication.model";
+import { AuthenticateInput, AuthenticateUseCase } from "./authenticate.usecase";
+
+export interface BanUserInput {
+  token: string;
+  provider: ThirdProvider;
+}
 
 export class BanUserUseCase {
   constructor(private authenticationDataSource: AuthenticationDataSource) {}

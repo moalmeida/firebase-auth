@@ -1,6 +1,9 @@
 import { UserDataSource } from "../../datasource/user.datasource";
 import { UserOutput } from "../../datasource/user.model";
-import { CreateUserUseCase } from "../../usecase/create-user.usecase";
+import {
+  CreateUserInput,
+  CreateUserUseCase,
+} from "../../usecase/create-user.usecase";
 
 export const CreateUserHandler = async (
   input: CreateUserInput,
@@ -8,8 +11,3 @@ export const CreateUserHandler = async (
 ): Promise<UserOutput> => {
   return new CreateUserUseCase(userDataSource).execute(input);
 };
-
-export interface CreateUserInput {
-  email: string;
-  displayName: string;
-}

@@ -1,9 +1,7 @@
 import * as faker from "faker/locale/pt_BR";
+import { ChangePasswordInput } from "../../usecase/change-password.usecase";
 
-import {
-  ChangePasswordHandler,
-  ChangePasswordInput,
-} from "../handler/change-password.handler";
+import { ChangePasswordHandler } from "../handler/change-password.handler";
 
 describe("change-password.handler", () => {
   let authenticationDataSource: any;

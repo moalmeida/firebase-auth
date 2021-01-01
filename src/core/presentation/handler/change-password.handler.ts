@@ -1,5 +1,8 @@
 import { AuthenticationDataSource } from "../../datasource/authentication.datasource";
-import { ChangePasswordUseCase } from "../../usecase/change-password.usecase";
+import {
+  ChangePasswordInput,
+  ChangePasswordUseCase,
+} from "../../usecase/change-password.usecase";
 
 export const ChangePasswordHandler = async (
   input: ChangePasswordInput,
@@ -7,8 +10,3 @@ export const ChangePasswordHandler = async (
 ): Promise<void> => {
   return new ChangePasswordUseCase(authenticationDataSource).execute(input);
 };
-
-export interface ChangePasswordInput {
-  token: string;
-  newPassword: string;
-}

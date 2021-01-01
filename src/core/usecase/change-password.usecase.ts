@@ -1,5 +1,9 @@
 import { AuthenticationDataSource } from "../datasource/authentication.datasource";
-import { ChangePasswordInput } from "../presentation/handler/change-password.handler";
+
+export interface ChangePasswordInput {
+  token: string;
+  newPassword: string;
+}
 
 export class ChangePasswordUseCase {
   constructor(private authenticationDataSource: AuthenticationDataSource) {}

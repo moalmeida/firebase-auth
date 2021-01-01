@@ -1,5 +1,8 @@
 import { AuthenticationDataSource } from "../../datasource/authentication.datasource";
-import { DeleteUserUseCase } from "../../usecase/delete-user.usecase";
+import {
+  DeleteUserInput,
+  DeleteUserUseCase,
+} from "../../usecase/delete-user.usecase";
 
 export const DeleteUserHandler = async (
   input: DeleteUserInput,
@@ -7,7 +10,3 @@ export const DeleteUserHandler = async (
 ): Promise<void> => {
   return new DeleteUserUseCase(authenticationDataSource).execute(input);
 };
-
-export interface DeleteUserInput {
-  id: string;
-}

@@ -1,5 +1,6 @@
 import * as faker from "faker/locale/pt_BR";
-import { SignOutHandler, SignOutInput } from "../handler/sign-out.handler";
+import { SignOutInput } from "../../usecase/sign-out.usecase";
+import { SignOutHandler } from "../handler/sign-out.handler";
 
 describe("sign-out.handler", () => {
   let authenticationDataSource: any;

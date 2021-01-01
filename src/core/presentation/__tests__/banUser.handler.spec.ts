@@ -3,7 +3,8 @@ import {
   AuthenticateOutput,
   ThirdProvider,
 } from "../../datasource/authentication.model";
-import { BanUserHandler, BanUserInput } from "../handler/banUser.handler";
+import { BanUserInput } from "../../usecase/banUser.usecase";
+import { BanUserHandler } from "../handler/banUser.handler";
 
 describe("banUser.handler", () => {
   let authenticationDataSource: any;

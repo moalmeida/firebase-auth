@@ -3,7 +3,8 @@ import {
   AuthenticateOutput,
   ThirdProvider,
 } from "../../datasource/authentication.model";
-import { SigninHandler, SignInInput } from "../handler/sign-in.handler";
+import { SignInInput } from "../../usecase/sign-in.usecase";
+import { SigninHandler } from "../handler/sign-in.handler";
 
 describe("sign-in.handler", () => {
   let authenticationDataSource: any;

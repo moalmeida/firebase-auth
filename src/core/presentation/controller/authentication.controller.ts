@@ -1,26 +1,23 @@
-import { SigninHandler, SignInInput } from "../handler/sign-in.handler";
-import { SignUpHandler, SignUpInput } from "../handler/sign-up.handler";
-import {
-  ResetPasswordEmailInput,
-  ResetPasswordEmailHandler,
-} from "../handler/reset-password-email.handler";
-import {
-  AuthenticateHandler,
-  AuthenticateInput,
-} from "../handler/authenticate.handler";
-import { SignOutHandler, SignOutInput } from "../handler/sign-out.handler";
-import {
-  ChangePasswordHandler,
-  ChangePasswordInput,
-} from "../handler/change-password.handler";
-import { BanUserHandler, BanUserInput } from "../handler/banUser.handler";
-import { UnbanUserHandler, UnbanUserInput } from "../handler/unbanUser.handler";
-import {
-  DeleteUserHandler,
-  DeleteUserInput,
-} from "../handler/delete-user.handler";
+import { SigninHandler } from "../handler/sign-in.handler";
+import { SignUpHandler } from "../handler/sign-up.handler";
+import { ResetPasswordEmailHandler } from "../handler/reset-password-email.handler";
+import { AuthenticateHandler } from "../handler/authenticate.handler";
+import { SignOutHandler } from "../handler/sign-out.handler";
+import { ChangePasswordHandler } from "../handler/change-password.handler";
+import { BanUserHandler } from "../handler/banUser.handler";
+import { UnbanUserHandler } from "../handler/unbanUser.handler";
+import { DeleteUserHandler } from "../handler/delete-user.handler";
 import { Application, Request, Response } from "../application.model";
 import { AuthenticationDataSource } from "../../datasource/authentication.datasource";
+import { SignInInput } from "../../usecase/sign-in.usecase";
+import { SignUpInput } from "../../usecase/sign-up.usecase";
+import { ResetPasswordEmailInput } from "../../usecase/reset-password-email.usecase";
+import { AuthenticateInput } from "../../usecase/authenticate.usecase";
+import { SignOutInput } from "../../usecase/sign-out.usecase";
+import { ChangePasswordInput } from "../../usecase/change-password.usecase";
+import { BanUserInput } from "../../usecase/banUser.usecase";
+import { UnbanUserInput } from "../../usecase/unbanUser.usecase";
+import { DeleteUserInput } from "../../usecase/delete-user.usecase";
 
 export class AuthenticationController {
   constructor(

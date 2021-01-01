@@ -1,6 +1,9 @@
 import { UserDataSource } from "../datasource/user.datasource";
-import { GetUserInput } from "../presentation/handler/get-user.handler";
 import { UserOutput } from "../datasource/user.model";
+
+export interface GetUserInput {
+  email: string;
+}
 
 export class GetUserUseCase {
   constructor(private userDataSource: UserDataSource) {}

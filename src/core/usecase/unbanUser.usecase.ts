@@ -1,5 +1,8 @@
 import { AuthenticationDataSource } from "../datasource/authentication.datasource";
-import { UnbanUserInput } from "../presentation/handler/unbanUser.handler";
+
+export interface UnbanUserInput {
+  id: string;
+}
 
 export class UnbanUserUseCase {
   constructor(private authenticationDataSource: AuthenticationDataSource) {}

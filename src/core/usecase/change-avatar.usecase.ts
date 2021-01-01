@@ -1,5 +1,9 @@
 import { UserDataSource } from "../datasource/user.datasource";
-import { ChangeAvatarInput } from "../presentation/handler/change-avatar.handler";
+
+export interface ChangeAvatarInput {
+  uid: string;
+  avatar: string;
+}
 
 export class ChangeAvatarUseCase {
   constructor(private userDataSource: UserDataSource) {}

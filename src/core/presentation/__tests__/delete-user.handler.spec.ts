@@ -1,9 +1,7 @@
 import * as faker from "faker/locale/pt_BR";
+import { DeleteUserInput } from "../../usecase/delete-user.usecase";
 
-import {
-  DeleteUserHandler,
-  DeleteUserInput,
-} from "../handler/delete-user.handler";
+import { DeleteUserHandler } from "../handler/delete-user.handler";
 
 describe("delete-user.handler", () => {
   let authenticationDataSource: any;

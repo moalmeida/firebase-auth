@@ -1,9 +1,7 @@
 import * as faker from "faker/locale/pt_BR";
+import { ResetPasswordEmailInput } from "../../usecase/reset-password-email.usecase";
 
-import {
-  ResetPasswordEmailHandler,
-  ResetPasswordEmailInput,
-} from "../handler/reset-password-email.handler";
+import { ResetPasswordEmailHandler } from "../handler/reset-password-email.handler";
 
 describe("reset-password-email.handler", () => {
   let authenticationDataSource: any;

@@ -1,5 +1,6 @@
 import * as faker from "faker/locale/pt_BR";
-import { UnbanUserHandler, UnbanUserInput } from "../handler/unbanUser.handler";
+import { UnbanUserInput } from "../../usecase/unbanUser.usecase";
+import { UnbanUserHandler } from "../handler/unbanUser.handler";
 
 describe("unbanUser.handler", () => {
   let authenticationDataSource: any;
