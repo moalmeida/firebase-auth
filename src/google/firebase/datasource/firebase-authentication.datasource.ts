@@ -1,12 +1,12 @@
 import * as admin from "firebase-admin";
 import { default as firebase } from "firebase";
 import { getConfig } from "../../../config";
+import { AuthenticationDataSource } from "../../../core/datasource/authentication.datasource";
 import {
-  AuthenticationDataSource,
-  AuthInfo,
+  AuthenticateOutput,
   AuthService,
   ThirdProvider,
-} from "../../../core/datasource/authentication.datasource";
+} from "../../../core/datasource/authentication.model";
 
 export class FirebaseAuthenticationDataSource
   implements AuthenticationDataSource {
@@ -38,8 +38,8 @@ export class FirebaseAuthenticationDataSource
   public async signUpWithEmail(
     email: string,
     password: string
-  ): Promise<AuthInfo> {
-    return new Promise<AuthInfo>(async (res, rej) => {
+  ): Promise<AuthenticateOutput> {
+    return new Promise<AuthenticateOutput>(async (res, rej) => {
       try {
         const credential = await firebase
           .auth()
@@ -58,8 +58,8 @@ export class FirebaseAuthenticationDataSource
   public async signInWithEmail(
     email: string,
     password: string
-  ): Promise<AuthInfo> {
-    return new Promise<AuthInfo>(async (res, rej) => {
+  ): Promise<AuthenticateOutput> {
+    return new Promise<AuthenticateOutput>(async (res, rej) => {
       try {
         const credential = await firebase
           .auth()
@@ -75,11 +75,11 @@ export class FirebaseAuthenticationDataSource
     });
   }
 
-  public async sendPasswordResetEmail(email: string): Promise<string> {
-    return new Promise<string>(async (res, rej) => {
+  public async resetPasswordEmail(email: string): Promise<void> {
+    return new Promise<void>(async (res, rej) => {
       try {
         await firebase.auth().sendPasswordResetEmail(email);
-        res(`Reset Password Email sent to ${email}`);
+        res();
       } catch (err) {
         rej(err);
       }
@@ -88,16 +88,17 @@ export class FirebaseAuthenticationDataSource
   public async changePassword(
     token: string,
     newPassword: string
-  ): Promise<string> {
+  ): Promise<void> {
     await this.authenticate(token);
     await this.user.updatePassword(newPassword);
-    return "Password successfully changed";
   }
 
-  public async facebookAuthenticate(token: string): Promise<AuthInfo> {
+  public async facebookAuthenticate(
+    token: string
+  ): Promise<AuthenticateOutput> {
     const credential = firebase.auth.FacebookAuthProvider.credential(token);
 
-    return new Promise<AuthInfo>(async (res, rej) => {
+    return new Promise<AuthenticateOutput>(async (res, rej) => {
       await firebase
         .auth()
         .signInWithCredential(credential)
@@ -114,10 +115,10 @@ export class FirebaseAuthenticationDataSource
     });
   }
 
-  public async googleAuthenticate(token: string): Promise<AuthInfo> {
+  public async googleAuthenticate(token: string): Promise<AuthenticateOutput> {
     const credential = firebase.auth.GoogleAuthProvider.credential(token);
 
-    return new Promise<AuthInfo>(async (res, rej) => {
+    return new Promise<AuthenticateOutput>(async (res, rej) => {
       await firebase
         .auth()
         .signInWithCredential(credential)
@@ -133,7 +134,7 @@ export class FirebaseAuthenticationDataSource
         .catch((err) => console.log("err: ", err));
     });
   }
-  public async authenticate(token: string): Promise<AuthInfo> {
+  public async authenticate(token: string): Promise<AuthenticateOutput> {
     await firebase.auth().signInWithCustomToken(token);
 
     this.user = firebase.auth().currentUser;
@@ -152,36 +153,34 @@ export class FirebaseAuthenticationDataSource
     await firebase.auth().signOut();
   }
 
-  public async banUser(uid: string): Promise<string> {
-    return new Promise<string>(async (res, rej) => {
+  public async banUser(uid: string): Promise<void> {
+    return new Promise(async (res, rej) => {
       try {
         await admin.auth().updateUser(uid, {
           disabled: true,
         });
 
-        res("User disabled successfully");
+        res();
       } catch (err) {
         rej(err);
       }
     });
   }
 
-  public async unbanUser(uid: string): Promise<string> {
+  public async unbanUser(uid: string): Promise<void> {
     await admin.auth().updateUser(uid, {
       disabled: false,
     });
-    return "User enabled successfully";
   }
 
-  public async deleteUser(uid: string): Promise<string> {
+  public async deleteUser(uid: string): Promise<void> {
     await admin.auth().deleteUser(uid);
-    return "User deleted successfully";
   }
 
   private async firebaseCredentialToAuthInfo(
     firebaseCredentials: firebase.auth.UserCredential,
     customToken?: string
-  ): Promise<AuthInfo> {
+  ): Promise<AuthenticateOutput> {
     const token = customToken || (await firebaseCredentials.user.getIdToken());
     return {
       id: firebaseCredentials.user.uid,

@@ -2,8 +2,6 @@ export interface Application {
   route: any;
   post: any;
   get: any;
-  delete: any;
-  patch: any;
 }
 
 export interface Request {
@@ -13,6 +11,6 @@ export interface Request {
 }
 
 export interface Response {
-  status: any;
-  send: any;
+  status: Function;
+  send: Function;
 }
